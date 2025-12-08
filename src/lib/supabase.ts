@@ -8,3 +8,20 @@ if (!supabaseUrl || !supabaseAnonKey) {
 }
 
 export const supabase = createClient(supabaseUrl || '', supabaseAnonKey || '')
+
+export function getOptimizedImageUrl(url: string, width: number) {
+    if (!url) return '';
+
+    // Supabase Storage Optimization
+    if (url.includes('supabase.co/storage/v1/object/public')) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}width=${width}&quality=80&resize=contain`;
+    }
+
+    // Unsplash Optimization (for mock data)
+    if (url.includes('images.unsplash.com')) {
+        return url.replace(/w=\d+/, `w=${width}`);
+    }
+
+    return url;
+}
