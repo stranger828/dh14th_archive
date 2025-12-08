@@ -2,16 +2,26 @@ import { useState, useEffect } from 'react';
 import { supabase, getOptimizedImageUrl } from '../lib/supabase';
 import type { Output } from '../types';
 
+import { useSearchParams } from 'react-router-dom';
+
 export default function OutputGrid() {
     const [outputs, setOutputs] = useState<Output[]>([]);
     const [loading, setLoading] = useState(true);
+    const [searchParams] = useSearchParams();
+    const authorFilter = searchParams.get('author');
 
     useEffect(() => {
         async function fetchOutputs() {
-            // Attempt to fetch from 'outputs' table as per prompt.
-            const { data, error } = await supabase
+            setLoading(true);
+            let query = supabase
                 .from('outputs')
-                .select('*')
+                .select('*');
+
+            if (authorFilter) {
+                query = query.eq('author', authorFilter);
+            }
+
+            const { data, error } = await query
                 .order('created_at', { ascending: false })
                 .limit(15);
 
@@ -24,7 +34,7 @@ export default function OutputGrid() {
         }
 
         fetchOutputs();
-    }, []);
+    }, [authorFilter]);
 
     if (loading) {
         return (
@@ -44,7 +54,7 @@ export default function OutputGrid() {
 
                 <div className="flex items-end justify-between mb-12">
                     <h3 className="text-4xl md:text-4xl font-bold tracking-tighter uppercase text-black dark:text-white">
-                        Projects Outputs
+                        {authorFilter ? `${authorFilter}'s Works` : 'Projects Outputs'}
                     </h3>
                     <span className="hidden md:block text-gray-500 text-lg">
                         ({outputs.length.toString().padStart(2, '0')})

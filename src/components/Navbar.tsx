@@ -100,9 +100,14 @@ export default function Navbar() {
                                                             className="max-h-60 overflow-y-auto p-4 space-y-2 scrollbar-hide scroll-smooth"
                                                         >
                                                             {members.map((member) => (
-                                                                <div key={member} className="text-center text-sm text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white cursor-pointer py-1">
+                                                                <Link
+                                                                    key={member}
+                                                                    to={`/output?author=${member}`}
+                                                                    onClick={() => setIsMemberOpen(false)}
+                                                                    className="block text-center text-sm text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white cursor-pointer py-1"
+                                                                >
                                                                     {member}
-                                                                </div>
+                                                                </Link>
                                                             ))}
                                                         </div>
 
@@ -184,7 +189,17 @@ export default function Navbar() {
                                                 >
                                                     <div className="max-h-60 overflow-y-auto p-4 grid grid-cols-2 gap-2 text-sm">
                                                         {members.map(member => (
-                                                            <span key={member} className="text-gray-600 dark:text-gray-400">{member}</span>
+                                                            <Link
+                                                                key={member}
+                                                                to={`/output?author=${member}`}
+                                                                onClick={() => {
+                                                                    setIsMemberOpen(false);
+                                                                    setIsOpen(false);
+                                                                }}
+                                                                className="text-gray-600 dark:text-gray-400 block py-1"
+                                                            >
+                                                                {member}
+                                                            </Link>
                                                         ))}
                                                     </div>
                                                 </motion.div>

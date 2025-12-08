@@ -3,6 +3,11 @@ import { supabase } from '../../lib/supabase';
 import type { Output } from '../../types';
 import { Plus, Trash2, Edit2, Upload, X, Loader2, CheckSquare, Square } from 'lucide-react';
 
+const MEMBERS = [
+    "김기웅", "김소연", "김진영", "김태양", "노윤하", "문지은",
+    "박건희", "이가경", "이정원", "장현주", "정여진", "조수진", "황혜명"
+];
+
 export default function OutputManager() {
     const [outputs, setOutputs] = useState<Output[]>([]);
     const [loading, setLoading] = useState(true);
@@ -16,7 +21,8 @@ export default function OutputManager() {
         description: '',
         image_url: '',
         is_featured: false,
-        link_url: ''
+        link_url: '',
+        author: '' // New state for author
     });
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -94,7 +100,8 @@ export default function OutputManager() {
             description: formData.description || '',
             image_url: formData.image_url,
             is_featured: formData.is_featured || false,
-            link_url: formData.link_url || ''
+            link_url: formData.link_url || '',
+            author: formData.author || '' // Include author
         };
 
         if (currentId) {
@@ -133,7 +140,8 @@ export default function OutputManager() {
             description: '',
             image_url: '',
             is_featured: false,
-            link_url: ''
+            link_url: '',
+            author: ''
         });
         setCurrentId(null);
         setIsEditing(false);
@@ -164,6 +172,21 @@ export default function OutputManager() {
                             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 dark:text-white focus:ring-black dark:focus:ring-white"
                             required
                         />
+                    </div>
+
+                    {/* Author Select */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Author</label>
+                        <select
+                            value={formData.author || ''}
+                            onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 dark:text-white focus:ring-black dark:focus:ring-white"
+                        >
+                            <option value="">Select Author</option>
+                            {MEMBERS.map(member => (
+                                <option key={member} value={member}>{member}</option>
+                            ))}
+                        </select>
                     </div>
 
                     {/* Description */}
@@ -306,6 +329,7 @@ export default function OutputManager() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="text-sm font-medium text-gray-900 dark:text-white max-w-xs truncate">{output.title}</div>
+                                        <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{output.author}</div>
                                         <div className="text-sm text-gray-500 dark:text-gray-400 max-w-xs truncate">{output.description}</div>
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">

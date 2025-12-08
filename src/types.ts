@@ -7,6 +7,7 @@ export interface Output {
     category?: string; // e.g., 'discipline', 'outcome'
     link_url?: string; // For clicking to detail
     is_featured?: boolean;
+    author?: string;
 }
 
 export interface SliderItem {
