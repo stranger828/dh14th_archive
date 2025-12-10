@@ -71,7 +71,7 @@ export default function OutputGrid() {
                             <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-900 mb-4">
                                 {item.image_url ? (
                                     <img
-                                        src={getOptimizedImageUrl(item.image_url, 600)}
+                                        src={getOptimizedImageUrl(item.image_url, 800)}
                                         alt={item.title}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                                     />

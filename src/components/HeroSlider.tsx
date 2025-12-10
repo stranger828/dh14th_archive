@@ -109,7 +109,7 @@ export default function HeroSlider() {
                         <div className="w-full h-full p-2 md:p-4 bg-black flex items-center justify-center relative group overflow-hidden">
                             {/* Image */}
                             <img
-                                src={getOptimizedImageUrl(item.image_url, 1200)}
+                                src={getOptimizedImageUrl(item.image_url, 800)}
                                 alt={item.title || 'Slide'}
                                 className="max-w-full max-h-full object-contain transition-transform duration-500 group-hover:scale-105"
                             />
