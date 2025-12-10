@@ -9,8 +9,8 @@ export const mockOutputs: Output[] = [
         image_url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80',
         category: 'Poster',
         author: 'Yesung Jin',
-        workshop: '2025 A-Hand Workshop',
-        project_name: 'Identity Design',
+        "Workshop Name": '2025 A-Hand Workshop',
+        "Project Name": 'Identity Design',
         link_url: ''
     },
     {
@@ -21,8 +21,8 @@ export const mockOutputs: Output[] = [
         image_url: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?auto=format&fit=crop&w=800&q=80',
         category: 'Art',
         author: 'John Doe',
-        workshop: 'Creative Coding',
-        project_name: 'Visual Experiments',
+        "Workshop Name": 'Creative Coding',
+        "Project Name": 'Visual Experiments',
         link_url: ''
     },
     {
@@ -33,8 +33,8 @@ export const mockOutputs: Output[] = [
         image_url: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=800&q=80',
         category: 'Typography',
         author: 'Alice Smith',
-        workshop: 'Type Masters',
-        project_name: 'Letterform Study',
+        "Workshop Name": 'Type Masters',
+        "Project Name": 'Letterform Study',
         link_url: ''
     },
     {
@@ -45,8 +45,8 @@ export const mockOutputs: Output[] = [
         image_url: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=800&q=80',
         category: 'Digital Art',
         author: 'Bob Wilson',
-        workshop: 'Digital Future',
-        project_name: 'Cyber Aesthetics',
+        "Workshop Name": 'Digital Future',
+        "Project Name": 'Cyber Aesthetics',
         link_url: ''
     },
     {
@@ -57,8 +57,8 @@ export const mockOutputs: Output[] = [
         image_url: 'https://images.unsplash.com/photo-1592078615290-033ee584e267?auto=format&fit=crop&w=800&q=80',
         category: 'Product',
         author: 'Sarah Lee',
-        workshop: 'Industrial Design',
-        project_name: 'Furniture 2025',
+        "Workshop Name": 'Industrial Design',
+        "Project Name": 'Furniture 2025',
         link_url: ''
     }
 ];
