@@ -8,8 +8,9 @@ export interface Output {
     link_url?: string; // For clicking to detail
     is_featured?: boolean;
     author?: string;
-    workshop?: string;
-    project_name?: string;
+    date?: string;
+    "Workshop Name"?: string;
+    "Project Name"?: string;
 }
 
 export interface SliderItem {

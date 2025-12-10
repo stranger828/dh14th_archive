@@ -63,16 +63,16 @@ export default function WorkDetailPage() {
                             {work.category || 'Poster'}
                         </div>
                         <div className="col-span-1 hidden md:flex items-center justify-center border-r border-b border-gray-800 border-gray-900 text-gray-300 py-4">
-                            {work.workshop || '-'}
+                            {work['Workshop Name'] || '-'}
                         </div>
                         <div className="col-span-1 hidden md:flex items-center justify-center border-r border-b border-gray-800 border-gray-900 text-gray-300 py-4">
-                            {work.project_name || '-'}
+                            {work['Project Name'] || '-'}
                         </div>
                         <div className="col-span-1 flex items-center justify-center border-r border-b border-gray-800 border-gray-900 overflow-hidden text-ellipsis whitespace-nowrap px-2 py-4">
                             {work.title}
                         </div>
                         <div className="col-span-1 flex items-center justify-center border-b border-gray-800 py-4">
-                            {year}
+                            {work.date || year}
                         </div>
                     </div>
                 </div>
