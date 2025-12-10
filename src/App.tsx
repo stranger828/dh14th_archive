@@ -29,7 +29,7 @@ function PublicLayout() {
         title={isSnowing ? 'Stop Snowing' : 'Let it Snow'}
       >
         <img
-          src={isSnowing ? '/stoppplz.gif' : '/letitsnow.gif'}
+          src={isSnowing ? '/stoppplz.gif' : '/letitsnow.gif?v=2'}
           alt={isSnowing ? 'Stop Snowing' : 'Let it Snow'}
           className="w-32 h-32 object-contain drop-shadow-lg"
         />
