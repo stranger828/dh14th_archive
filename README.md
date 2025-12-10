@@ -1,73 +1,45 @@
-# React + TypeScript + Vite
+# Antigravity Archive
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web archive project designed to creatively display various works. This platform serves as a digital gallery, offering an immersive experience with interactive elements and a comprehensive management system.
 
-Currently, two official plugins are available:
+## Key Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### ❄️ Interactive Snow Effect
+- **Toggleable Animation**: A "Let it Snow" button allows users to toggle a global snow effect on and off.
+- **Dynamic UI**: The button icon updates primarily to reflect the current state (Start/Stop).
+- **Cache Handling**: Recent updates include cache busting strategies to ensure the latest assets are always loaded.
 
-## React Compiler
+### 🎨 Work Archive
+- **Grid Layout**: Works are displayed in a responsive grid layout.
+- **Filtering**: Supports filtering works by Author (e.g., `/output?author=Name`).
+- **Detailed View**: dedicated pages for individual work details.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### 🛠️ Admin Dashboard
+- **Secure Access**: Dedicated login page for administrators.
+- **Content Management**:
+    - **Output Manager**: Add, edit, and delete work entries.
+    - **Slider Manager**: Manage the hero slider content on the main page.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Frontend**: React, TypeScript, Vite
+- **Styling**: Tailwind CSS
+- **Backend/Database**: Supabase
+- **Deployment**: (Add deployment details here if applicable)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+2.  **Run Development Server**
+    ```bash
+    npm run dev
+    ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+3.  **Build for Production**
+    ```bash
+    npm run build
+    ```

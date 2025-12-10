@@ -22,7 +22,9 @@ export default function OutputManager() {
         image_url: '',
         is_featured: false,
         link_url: '',
-        author: '' // New state for author
+        author: '',
+        workshop: '',
+        project_name: ''
     });
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -101,7 +103,9 @@ export default function OutputManager() {
             image_url: formData.image_url,
             is_featured: formData.is_featured || false,
             link_url: formData.link_url || '',
-            author: formData.author || '' // Include author
+            author: formData.author || '',
+            workshop: formData.workshop || '',
+            project_name: formData.project_name || ''
         };
 
         if (currentId) {
@@ -141,7 +145,9 @@ export default function OutputManager() {
             image_url: '',
             is_featured: false,
             link_url: '',
-            author: ''
+            author: '',
+            workshop: '',
+            project_name: ''
         });
         setCurrentId(null);
         setIsEditing(false);
@@ -174,19 +180,46 @@ export default function OutputManager() {
                         />
                     </div>
 
-                    {/* Author Select */}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Author</label>
-                        <select
-                            value={formData.author || ''}
-                            onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 dark:text-white focus:ring-black dark:focus:ring-white"
-                        >
-                            <option value="">Select Author</option>
-                            {MEMBERS.map(member => (
-                                <option key={member} value={member}>{member}</option>
-                            ))}
-                        </select>
+                    {/* Meta Fields Grid: Author, Workshop, Project */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {/* Author Select */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Author</label>
+                            <select
+                                value={formData.author || ''}
+                                onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 dark:text-white focus:ring-black dark:focus:ring-white"
+                            >
+                                <option value="">Select Author</option>
+                                {MEMBERS.map(member => (
+                                    <option key={member} value={member}>{member}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Workshop Name */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Workshop Name</label>
+                            <input
+                                type="text"
+                                value={formData.workshop || ''}
+                                onChange={(e) => setFormData({ ...formData, workshop: e.target.value })}
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 dark:text-white focus:ring-black dark:focus:ring-white"
+                                placeholder="e.g. 2025 A-Hand Workshop"
+                            />
+                        </div>
+
+                        {/* Project Name */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Name</label>
+                            <input
+                                type="text"
+                                value={formData.project_name || ''}
+                                onChange={(e) => setFormData({ ...formData, project_name: e.target.value })}
+                                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md dark:bg-gray-800 dark:text-white focus:ring-black dark:focus:ring-white"
+                                placeholder="e.g. Identity Design"
+                            />
+                        </div>
                     </div>
 
                     {/* Description */}

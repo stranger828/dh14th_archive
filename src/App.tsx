@@ -1,9 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ArchivePage from './pages/ArchivePage';
 import HeroSlider from './components/HeroSlider';
 import OutputGrid from './components/OutputGrid';
+import WorkDetailPage from './pages/WorkDetailPage';
 
 
 // Admin Imports
@@ -18,11 +19,13 @@ import { useState } from 'react';
 // Public Layout Component
 function PublicLayout() {
   const [isSnowing, setIsSnowing] = useState(false);
+  const location = useLocation();
+  const isDetailPage = location.pathname.startsWith('/work/');
 
   return (
     <div className="flex flex-col min-h-screen font-sans text-black dark:text-white bg-white dark:bg-black selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black dark">
       {isSnowing && <SnowEffect />}
-      <Navbar />
+      {!isDetailPage && <Navbar />}
       <button
         onClick={() => setIsSnowing((prev) => !prev)}
         className="fixed bottom-4 right-4 z-50 hover:scale-110 transition-transform duration-200"
@@ -37,6 +40,7 @@ function PublicLayout() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/output" element={<ArchivePage />} />
+        <Route path="/work/:id" element={<WorkDetailPage />} />
         {/* Add other routes as needed */}
         <Route path="*" element={<div className="pt-32 text-center text-4xl font-bold uppercase">Page Not Found</div>} />
       </Routes>

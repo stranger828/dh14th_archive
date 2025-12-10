@@ -1,8 +1,11 @@
+
 import { useState, useEffect } from 'react';
 import { supabase, getOptimizedImageUrl } from '../lib/supabase';
 import type { Output } from '../types';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
+
+import { mockOutputs } from '../lib/mockData';
 
 export default function OutputGrid() {
     const [outputs, setOutputs] = useState<Output[]>([]);
@@ -25,10 +28,15 @@ export default function OutputGrid() {
                 .order('created_at', { ascending: false })
                 .limit(15);
 
-            if (error) {
-                console.error('Error fetching outputs:', error);
+            if (error || !data || data.length === 0) {
+                console.log('Using mock data (DB connection unavailable or empty)');
+                let mocks = [...mockOutputs];
+                if (authorFilter) {
+                    mocks = mocks.filter(item => item.author === authorFilter);
+                }
+                setOutputs(mocks);
             } else {
-                setOutputs(data || []);
+                setOutputs(data);
             }
             setLoading(false);
         }
@@ -54,18 +62,18 @@ export default function OutputGrid() {
 
                 <div className="flex items-end justify-between mb-12">
                     <h3 className="text-4xl md:text-4xl font-bold tracking-tighter uppercase text-black dark:text-white">
-                        {authorFilter ? `${authorFilter}'s Works` : 'Projects Outputs'}
-                    </h3>
+                        {authorFilter ? `${authorFilter} 's Works` : 'Projects Outputs'}
+                    </h3 >
                     <span className="hidden md:block text-gray-500 text-lg">
                         ({outputs.length.toString().padStart(2, '0')})
                     </span>
-                </div>
+                </div >
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-6 gap-y-12">
                     {outputs.map((item) => (
-                        <a
+                        <Link
                             key={item.id}
-                            href={item.link_url || '#'}
+                            to={`/work/${item.id}`}
                             className="group block cursor-pointer"
                         >
                             <div className="relative aspect-[3/4] overflow-hidden bg-gray-100 dark:bg-gray-900 mb-4">
@@ -91,10 +99,10 @@ export default function OutputGrid() {
                                     </p>
                                 </div>
                             </div>
-                        </a>
+                        </Link>
                     ))}
                 </div>
-            </div>
-        </section>
+            </div >
+        </section >
     );
 }
