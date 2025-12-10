@@ -15,12 +15,12 @@ export function getOptimizedImageUrl(url: string, width: number) {
     // Supabase Storage Optimization
     if (url.includes('supabase.co/storage/v1/object/public')) {
         const separator = url.includes('?') ? '&' : '?';
-        return `${url}${separator}width=${width}&quality=80&resize=contain`;
+        return `${url}${separator}width=${width}&quality=75&resize=contain&format=webp`;
     }
 
     // Unsplash Optimization (for mock data)
     if (url.includes('images.unsplash.com')) {
-        return url.replace(/w=\d+/, `w=${width}`);
+        return url.replace(/w=\d+/, `w=${width}&q=75&fm=webp`);
     }
 
     return url;
