@@ -106,50 +106,59 @@ export default function WorkDetailPage() {
 
 
             {/* Process Detail Section */}
-            {
-                work.process_image_url && (
-                    <div className="w-full bg-white dark:bg-black py-10 flex flex-col items-center">
-                        <button
-                            onClick={() => setIsProcessExpanded(!isProcessExpanded)}
-                            className="group flex flex-col items-center space-y-2 cursor-pointer focus:outline-none"
-                        >
-                            <span className="text-xs font-medium uppercase tracking-widest text-gray-500 group-hover:text-black dark:group-hover:text-white transition-colors">
-                                Process Detail
-                            </span>
-                            <div className={`transform transition-transform duration-300 ${isProcessExpanded ? 'rotate-180' : 'rotate-0'}`}>
-                                <svg
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.5"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors"
-                                >
-                                    <path d="M6 9l6 6 6-6" />
-                                </svg>
-                            </div>
-                        </button>
+            {(work.process_images?.length || work.process_image_url) && (
+                <div className="w-full bg-white dark:bg-black py-10 flex flex-col items-center">
+                    <button
+                        onClick={() => setIsProcessExpanded(!isProcessExpanded)}
+                        className="group flex flex-col items-center space-y-2 cursor-pointer focus:outline-none"
+                    >
+                        <span className="text-xs font-medium uppercase tracking-widest text-gray-500 group-hover:text-black dark:group-hover:text-white transition-colors">
+                            Process Detail
+                        </span>
+                        <div className={`transform transition-transform duration-300 ${isProcessExpanded ? 'rotate-180' : 'rotate-0'}`}>
+                            <svg
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors"
+                            >
+                                <path d="M6 9l6 6 6-6" />
+                            </svg>
+                        </div>
+                    </button>
 
-                        <div
-                            className={`w-full overflow-hidden transition-all duration-700 ease-in-out ${isProcessExpanded ? 'max-h-[5000px] opacity-100 mt-10' : 'max-h-0 opacity-0 mt-0'
-                                }`}
-                        >
-                            <div className="flex justify-center px-4">
+                    <div
+                        className={`w-full overflow-hidden transition-all duration-700 ease-in-out ${isProcessExpanded ? 'max-h-[5000px] opacity-100 mt-10' : 'max-h-0 opacity-0 mt-0'
+                            }`}
+                    >
+                        <div className="flex flex-col items-center space-y-4 px-4">
+                            {/* Support both array (new) and single string (legacy) */}
+                            {work.process_images && work.process_images.length > 0 ? (
+                                work.process_images.map((imgUrl, index) => (
+                                    <img
+                                        key={index}
+                                        src={getOptimizedImageUrl(imgUrl, 1600)}
+                                        alt={`Process Detail ${index + 1}`}
+                                        className="w-auto h-auto max-w-full shadow-lg"
+                                    />
+                                ))
+                            ) : (
                                 <img
-                                    src={getOptimizedImageUrl(work.process_image_url, 1600)}
+                                    src={getOptimizedImageUrl(work.process_image_url || '', 1600)}
                                     alt="Process Detail"
                                     className="w-auto h-auto max-w-full shadow-lg"
                                 />
-                            </div>
+                            )}
                         </div>
                     </div>
-                )
-            }
-
+                </div>
+            )}
             {/* Mobile Info (Visible only on small screens for Workshop/Project if needed, but keeping minimal for now based on request) */}
-        </div >
+        </div>
     );
 }

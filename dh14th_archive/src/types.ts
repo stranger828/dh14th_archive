@@ -12,6 +12,7 @@ export interface Output {
     "Workshop Name"?: string;
     "Project Name"?: string;
     process_image_url?: string;
+    process_images?: string[];
 }
 
 export interface SliderItem {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '../../lib/supabase';
 import type { Output } from '../../types';
-import { Plus, Trash2, Edit2, Upload, X, Loader2, CheckSquare, Square } from 'lucide-react';
+import { Plus, Trash2, Edit2, Upload, X, Loader2, CheckSquare, Square, ArrowUp, ArrowDown } from 'lucide-react';
 
 const MEMBERS = [
     "김기웅", "김소연", "김진영", "김태양", "노윤하", "문지은",
@@ -27,7 +27,8 @@ export default function OutputManager() {
         "Project Name": '',
         date: '',
         category: '',
-        process_image_url: ''
+        process_image_url: '',
+        process_images: []
     });
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -67,7 +68,7 @@ export default function OutputManager() {
         }
     };
 
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'image_url' | 'process_image_url' = 'image_url') => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'image_url' | 'process_image_url' | 'process_images' = 'image_url') => {
         if (!e.target.files || e.target.files.length === 0) {
             return;
         }
@@ -88,8 +89,32 @@ export default function OutputManager() {
         }
 
         const { data } = supabase.storage.from('images').getPublicUrl(filePath);
-        setFormData(prev => ({ ...prev, [field]: data.publicUrl }));
+
+        if (field === 'process_images') {
+            setFormData(prev => ({
+                ...prev,
+                process_images: [...(prev.process_images || []), data.publicUrl]
+            }));
+        } else {
+            setFormData(prev => ({ ...prev, [field]: data.publicUrl }));
+        }
         setUploading(false);
+    };
+
+    const handleMoveProcessImage = (index: number, direction: 'up' | 'down') => {
+        const images = [...(formData.process_images || [])];
+        if (direction === 'up' && index > 0) {
+            [images[index], images[index - 1]] = [images[index - 1], images[index]];
+        } else if (direction === 'down' && index < images.length - 1) {
+            [images[index], images[index + 1]] = [images[index + 1], images[index]];
+        }
+        setFormData({ ...formData, process_images: images });
+    };
+
+    const handleRemoveProcessImage = (index: number) => {
+        const images = [...(formData.process_images || [])];
+        images.splice(index, 1);
+        setFormData({ ...formData, process_images: images });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -112,7 +137,8 @@ export default function OutputManager() {
             "Project Name": formData["Project Name"] || '',
             date: formData.date || '',
             category: formData.category || '',
-            process_image_url: formData.process_image_url || ''
+            process_image_url: formData.process_image_url || '',
+            process_images: formData.process_images || []
         };
 
         if (currentId) {
@@ -157,7 +183,8 @@ export default function OutputManager() {
             "Project Name": '',
             date: '',
             category: '',
-            process_image_url: ''
+            process_image_url: '',
+            process_images: []
         });
         setCurrentId(null);
         setIsEditing(false);
@@ -297,32 +324,65 @@ export default function OutputManager() {
                         </div>
                     </div>
 
-                    {/* Process Image Upload */}
+                    {/* Process Image Upload (Multi) */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Process Detail Image (Optional)</label>
-                        <div className="mt-1 flex items-center space-x-4">
-                            {formData.process_image_url ? (
-                                <img src={formData.process_image_url} alt="Process Preview" className="h-24 w-24 object-cover rounded-md border border-gray-200" />
-                            ) : (
-                                <div className="h-24 w-24 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center border border-gray-200 dark:border-gray-700 text-gray-400">
-                                    No Image
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Process Detail Images (Ordered)</label>
+
+                        {/* List of existing process images */}
+                        <div className="space-y-2 mb-3">
+                            {formData.process_images?.map((imgUrl, index) => (
+                                <div key={index} className="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700">
+                                    <div className="flex items-center space-x-3">
+                                        <span className="text-sm font-mono text-gray-500 w-6">{index + 1}</span>
+                                        <img src={imgUrl} alt={`Process ${index}`} className="h-12 w-12 object-cover rounded" />
+                                        <span className="text-xs text-gray-400 truncate max-w-[150px]">{imgUrl.split('/').pop()}</span>
+                                    </div>
+                                    <div className="flex items-center space-x-1">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleMoveProcessImage(index, 'up')}
+                                            disabled={index === 0}
+                                            className={`p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 ${index === 0 ? 'text-gray-300 dark:text-gray-600' : 'text-gray-600 dark:text-gray-400'}`}
+                                        >
+                                            <ArrowUp size={16} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleMoveProcessImage(index, 'down')}
+                                            disabled={index === (formData.process_images?.length || 0) - 1}
+                                            className={`p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700 ${index === (formData.process_images?.length || 0) - 1 ? 'text-gray-300 dark:text-gray-600' : 'text-gray-600 dark:text-gray-400'}`}
+                                        >
+                                            <ArrowDown size={16} />
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleRemoveProcessImage(index)}
+                                            className="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500 ml-2"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </div>
                                 </div>
-                            )}
+                            ))}
+                        </div>
+
+                        {/* Upload Button */}
+                        <div className="mt-1 flex items-center space-x-4">
                             <input
                                 type="file"
                                 ref={processFileInputRef}
                                 className="hidden"
                                 accept="image/*"
-                                onChange={(e) => handleImageUpload(e, 'process_image_url')}
+                                onChange={(e) => handleImageUpload(e, 'process_images' as any)}
                             />
                             <button
                                 type="button"
                                 onClick={() => processFileInputRef.current?.click()}
                                 disabled={uploading}
-                                className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+                                className="inline-flex items-center px-4 py-2 border border-dashed border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-transparent hover:bg-gray-50 dark:hover:bg-gray-800 w-full justify-center"
                             >
-                                {uploading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <Upload className="mr-2 h-4 w-4" />}
-                                {uploading ? 'Uploading...' : 'Upload Process Image'}
+                                {uploading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <Plus className="mr-2 h-4 w-4" />}
+                                {uploading ? 'Uploading...' : 'Add Process Image'}
                             </button>
                         </div>
                     </div>
