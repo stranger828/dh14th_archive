@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ArchivePage from './pages/ArchivePage';
@@ -26,17 +27,21 @@ function PublicLayout() {
     <div className="flex flex-col min-h-screen font-sans text-black dark:text-white bg-white dark:bg-black selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black dark">
       {isSnowing && <SnowEffect />}
       {!isDetailPage && <Navbar />}
-      <button
+      <motion.button
+        drag
+        dragMomentum={false}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
         onClick={() => setIsSnowing((prev) => !prev)}
-        className="fixed bottom-4 right-4 z-50 hover:scale-110 transition-transform duration-200"
+        className="fixed bottom-4 right-4 z-50 cursor-grab active:cursor-grabbing"
         title={isSnowing ? 'Stop Snowing' : 'Let it Snow'}
       >
         <img
           src={isSnowing ? '/stoppplz.gif' : '/letitsnow.gif?v=2'}
           alt={isSnowing ? 'Stop Snowing' : 'Let it Snow'}
-          className="w-32 h-32 object-contain drop-shadow-lg"
+          className="w-32 h-32 object-contain drop-shadow-lg pointer-events-none"
         />
-      </button>
+      </motion.button>
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/output" element={<ArchivePage />} />

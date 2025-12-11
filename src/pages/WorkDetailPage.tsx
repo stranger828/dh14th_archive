@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { supabase, getOptimizedImageUrl } from '../lib/supabase';
 import type { Output } from '../types';
 import { mockOutputs } from '../lib/mockData';
 
 export default function WorkDetailPage() {
     const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
     const [work, setWork] = useState<Output | null>(null);
     const [loading, setLoading] = useState(true);
 
@@ -36,17 +38,23 @@ export default function WorkDetailPage() {
     const year = new Date(work.created_at).getFullYear();
 
     return (
-        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex flex-col">
+
+        <div className="min-h-screen bg-white dark:bg-black text-black dark:text-white flex flex-col relative">
+            {/* Back Button */}
+            <button
+                onClick={() => navigate(-1)}
+                className="fixed top-0 left-0 z-50 w-12 h-12 flex items-center justify-center bg-black/50 backdrop-blur-sm text-white hover:bg-black/70 transition-colors cursor-pointer"
+                aria-label="Go back"
+            >
+                <ArrowLeft className="w-5 h-5" />
+            </button>
+
             {/* Detailed Header Bar */}
             <div className="sticky top-0 z-40 bg-black backdrop-blur-sm text-white">
                 <div className="w-full">
                     {/* Header Labels */}
                     <div className="grid grid-cols-2 md:grid-cols-6 gap-0 text-[10px] md:text-xs font-medium uppercase tracking-widest text-gray-500 border-b border-gray-900">
-                        <div className="col-span-1 flex items-center justify-center border-r border-gray-900 py-3">
-                            <Link to="/" className="hover:text-white transition-colors w-full h-full flex items-center justify-center">
-                                Home
-                            </Link>
-                        </div>
+                        <div className="col-span-1 flex items-center justify-center border-r border-gray-900 py-3">Member</div>
                         <div className="col-span-1 flex items-center justify-center border-r border-gray-900 py-3">Category</div>
                         <div className="col-span-1 hidden md:flex items-center justify-center border-r border-gray-900 py-3">Workshop Name</div>
                         <div className="col-span-1 hidden md:flex items-center justify-center border-r border-gray-900 py-3">Project Name</div>
@@ -57,7 +65,7 @@ export default function WorkDetailPage() {
                     {/* Content Values */}
                     <div className="grid grid-cols-2 md:grid-cols-6 gap-0 text-xs md:text-sm font-medium uppercase tracking-tighter">
                         <div className="col-span-1 flex items-center justify-center border-r border-gray-900 py-4">
-                            {/* Empty as requested */}
+                            {work.author || '-'}
                         </div>
                         <div className="col-span-1 flex items-center justify-center border-r border-b border-gray-800 border-gray-900 py-4">
                             {work.category || 'Poster'}
