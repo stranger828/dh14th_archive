@@ -11,6 +11,7 @@ export interface Output {
     date?: string;
     "Workshop Name"?: string;
     "Project Name"?: string;
+    process_image_url?: string;
 }
 
 export interface SliderItem {

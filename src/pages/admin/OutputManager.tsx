@@ -26,10 +26,12 @@ export default function OutputManager() {
         "Workshop Name": '',
         "Project Name": '',
         date: '',
-        category: ''
+        category: '',
+        process_image_url: ''
     });
 
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const processFileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         fetchOutputs();
@@ -65,7 +67,7 @@ export default function OutputManager() {
         }
     };
 
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'image_url' | 'process_image_url' = 'image_url') => {
         if (!e.target.files || e.target.files.length === 0) {
             return;
         }
@@ -86,7 +88,7 @@ export default function OutputManager() {
         }
 
         const { data } = supabase.storage.from('images').getPublicUrl(filePath);
-        setFormData(prev => ({ ...prev, image_url: data.publicUrl }));
+        setFormData(prev => ({ ...prev, [field]: data.publicUrl }));
         setUploading(false);
     };
 
@@ -109,7 +111,8 @@ export default function OutputManager() {
             "Workshop Name": formData["Workshop Name"] || '',
             "Project Name": formData["Project Name"] || '',
             date: formData.date || '',
-            category: formData.category || ''
+            category: formData.category || '',
+            process_image_url: formData.process_image_url || ''
         };
 
         if (currentId) {
@@ -153,7 +156,8 @@ export default function OutputManager() {
             "Workshop Name": '',
             "Project Name": '',
             date: '',
-            category: ''
+            category: '',
+            process_image_url: ''
         });
         setCurrentId(null);
         setIsEditing(false);
@@ -279,7 +283,7 @@ export default function OutputManager() {
                                 ref={fileInputRef}
                                 className="hidden"
                                 accept="image/*"
-                                onChange={handleImageUpload}
+                                onChange={(e) => handleImageUpload(e, 'image_url')}
                             />
                             <button
                                 type="button"
@@ -289,6 +293,36 @@ export default function OutputManager() {
                             >
                                 {uploading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <Upload className="mr-2 h-4 w-4" />}
                                 {uploading ? 'Uploading...' : 'Upload Image'}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Process Image Upload */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Process Detail Image (Optional)</label>
+                        <div className="mt-1 flex items-center space-x-4">
+                            {formData.process_image_url ? (
+                                <img src={formData.process_image_url} alt="Process Preview" className="h-24 w-24 object-cover rounded-md border border-gray-200" />
+                            ) : (
+                                <div className="h-24 w-24 bg-gray-100 dark:bg-gray-800 rounded-md flex items-center justify-center border border-gray-200 dark:border-gray-700 text-gray-400">
+                                    No Image
+                                </div>
+                            )}
+                            <input
+                                type="file"
+                                ref={processFileInputRef}
+                                className="hidden"
+                                accept="image/*"
+                                onChange={(e) => handleImageUpload(e, 'process_image_url')}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => processFileInputRef.current?.click()}
+                                disabled={uploading}
+                                className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+                            >
+                                {uploading ? <Loader2 className="animate-spin mr-2 h-4 w-4" /> : <Upload className="mr-2 h-4 w-4" />}
+                                {uploading ? 'Uploading...' : 'Upload Process Image'}
                             </button>
                         </div>
                     </div>
