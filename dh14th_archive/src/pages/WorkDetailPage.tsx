@@ -144,14 +144,14 @@ export default function WorkDetailPage() {
                                         key={index}
                                         src={getOptimizedImageUrl(imgUrl, 1600)}
                                         alt={`Process Detail ${index + 1}`}
-                                        className="w-auto h-auto max-w-full shadow-lg"
+                                        className="w-auto h-auto max-w-full max-h-[85vh] object-contain shadow-lg"
                                     />
                                 ))
                             ) : (
                                 <img
                                     src={getOptimizedImageUrl(work.process_image_url || '', 1600)}
                                     alt="Process Detail"
-                                    className="w-auto h-auto max-w-full shadow-lg"
+                                    className="w-auto h-auto max-w-full max-h-[85vh] object-contain shadow-lg"
                                 />
                             )}
                         </div>
